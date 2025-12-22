@@ -37,11 +37,13 @@ class BaseDataset(Dataset):
         image = Image.open(image_path).convert('RGB')
         if self.transform:
             image = self.transform(image)
+        self.height = image.shape[1]
+        self.width = image.shape[2]
         return image
 
     def _load_mask(self, mask_path):
         if mask_path is None:
-            return None
+            return torch.zeros((1, self.height, self.width))
         mask = Image.open(mask_path).convert('L')
         if self.mask_transform:
             mask = self.mask_transform(mask)

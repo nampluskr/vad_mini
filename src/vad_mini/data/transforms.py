@@ -3,7 +3,7 @@
 import torchvision.transforms as T
 
 MEAN = [0.485, 0.456, 0.406]
-STD = [0.229, 0.224, 0.225])
+STD = [0.229, 0.224, 0.225]
 
 def get_train_transform(img_size=256, normalize=True):
     transforms = [
