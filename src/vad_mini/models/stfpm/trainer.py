@@ -10,10 +10,26 @@ from .loss import STFPMLoss
 
 class STFPMTrainer(BaseTrainer):
     def __init__(self, backbone="resnet50", layers=["layer1", "layer2", "layer3"]):
-
-        model = STFPMModel(backbone=backbone, layers=layers)
+        model = STFPMModel(
+            backbone=backbone,
+            layers=layers
+        )
         loss_fn = STFPMLoss()
-        super().__init__(model, loss_fn)
+        super().__init__(model, loss_fn=loss_fn)
+
+    def configure_optimizers(self):
+        self.optimizer = optim.SGD(
+            params=self.model.student_model.parameters(),
+            lr=0.2,         # default: lr=0.4
+            momentum=0.9,
+            dampening=0.0,
+            weight_decay=0.001,
+        )
+        self.scheduler = None
+
+    def configure_early_stoppers(self):
+        self.train_early_stopper = None
+        self.valid_early_stopper = None
 
     def training_step(self, batch):
         images = batch["image"].to(self.device)
@@ -24,13 +40,4 @@ class STFPMTrainer(BaseTrainer):
     def validation_step(self, batch):
         images = batch["image"].to(self.device)
         predictions = self.model(images)
-        return predictions
-
-    def configure_optimizers(self):
-        return optim.SGD(
-            params=self.model.student_model.parameters(),
-            lr=0.1,
-            momentum=0.9,
-            dampening=0.0,
-            weight_decay=0.001,
-        )
+        return {**batch, **predictions}

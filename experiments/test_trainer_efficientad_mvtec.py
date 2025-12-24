@@ -22,8 +22,8 @@ DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
 CATEGORY = "bottle"
 IMG_SIZE = 256
-BATCH_SIZE = 32
-NORMALIZE = True
+BATCH_SIZE = 1
+NORMALIZE = False
 SEED = 42
 
 
@@ -68,10 +68,10 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.stfpm.trainer import STFPMTrainer
+    from vad_mini.models.efficientad.trainer import EfficientAdTrainer
 
-    trainer = STFPMTrainer(backbone="resnet34")
-    train_outputs = trainer.fit(train_loader, num_epochs=10, valid_loader=test_loader)
+    trainer = EfficientAdTrainer(model_size="small")
+    train_outputs = trainer.fit(train_loader, num_epochs=10, num_steps=1000, valid_loader=test_loader)
     thresholds = trainer.calibrate_threshold(train_loader)
 
     print()

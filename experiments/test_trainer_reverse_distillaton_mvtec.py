@@ -20,7 +20,7 @@ from vad_mini.data.transforms import get_train_transform, get_test_transform, ge
 
 DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
-CATEGORY = "bottle"
+CATEGORY = "tile"
 IMG_SIZE = 256
 BATCH_SIZE = 32
 NORMALIZE = True
@@ -68,9 +68,9 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.stfpm.trainer import STFPMTrainer
+    from vad_mini.models.reverse_distillation.trainer import ReverseDistillationTrainer
 
-    trainer = STFPMTrainer(backbone="resnet34")
+    trainer = ReverseDistillationTrainer(backbone="wide_resnet50_2", anomaly_map_mode="add")
     train_outputs = trainer.fit(train_loader, num_epochs=10, valid_loader=test_loader)
     thresholds = trainer.calibrate_threshold(train_loader)
 
