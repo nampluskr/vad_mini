@@ -14,7 +14,7 @@ DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
 CATEGORY = "tile"
 IMG_SIZE = 256
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 NORMALIZE = True
 SEED = 42
 

@@ -2,7 +2,7 @@
 
 import einops
 import torch
-import torch.nn.functinal as F
+import torch.nn.functional as F
 import torch.optim as optim
 
 from vad_mini.models.components.base_trainer import BaseTrainer
@@ -33,10 +33,11 @@ class CflowTrainer(BaseTrainer):
         for decoder_idx in range(len(self.model.pool_layers)):
             decoders_parameters.extend(list(self.model.decoders[decoder_idx].parameters()))
 
-        self.optimizer = optim.Adam(
+        self.decoder_optimizer = optim.Adam(
             params=decoders_parameters,
             lr=0.0001,
         )
+        self.optimizer = None
         self.scheduler = None
         self.gradient_clip_val = None
 
@@ -52,7 +53,7 @@ class CflowTrainer(BaseTrainer):
         3. Apply positional encoding
         4. Train decoders using normalizing flows
         """
-        images: torch.Tensor = batch["image"]
+        images: torch.Tensor = batch["image"].to(self.device)
         activation = self.model.encoder(images)
         avg_loss = torch.zeros([1], dtype=torch.float64).to(self.device)
 
@@ -84,7 +85,7 @@ class CflowTrainer(BaseTrainer):
                 raise ValueError(msg)
 
             for batch_num in range(fiber_batches):  # per-fiber processing
-                self.optimizer.zero_grad()
+                self.decoder_optimizer.zero_grad()
                 if batch_num < (fiber_batches - 1):
                     idx = torch.arange(
                         batch_num * self.model.fiber_batch_size,
@@ -101,8 +102,8 @@ class CflowTrainer(BaseTrainer):
                 log_prob = decoder_log_prob / dim_feature_vector  # likelihood per dim
                 loss = -F.logsigmoid(log_prob).mean()
                 loss.backward()
-                self.optimizer.step()
+                self.decoder_optimizer.step()
                 avg_loss += loss.sum()
 
-        return {"loss": avg_loss}
+        return {"loss": avg_loss.detach().item()}
 

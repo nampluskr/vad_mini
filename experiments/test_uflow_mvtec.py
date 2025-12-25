@@ -79,7 +79,7 @@ if __name__ == "__main__":
         # BACKBONE = "wide_resnet50_2"
         BACKBONE = "resnet18"
         trainer = CsfloUflowTrainer(backbone=BACKBONE, input_size=(IMG_SIZE, IMG_SIZE))
-        train_outputs = trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+        train_outputs = trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
         thresholds = trainer.calibrate_threshold(train_loader)
 
         print()
