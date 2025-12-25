@@ -10,6 +10,7 @@ from .loss import STFPMLoss
 
 class STFPMTrainer(BaseTrainer):
     def __init__(self, backbone="resnet50", layers=["layer1", "layer2", "layer3"]):
+
         model = STFPMModel(
             backbone=backbone,
             layers=layers
@@ -20,7 +21,7 @@ class STFPMTrainer(BaseTrainer):
     def configure_optimizers(self):
         self.optimizer = optim.SGD(
             params=self.model.student_model.parameters(),
-            lr=0.4,         # default lr=0.4
+            lr=0.4,
             momentum=0.9,
             dampening=0.0,
             weight_decay=0.001,

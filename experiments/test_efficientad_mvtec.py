@@ -62,14 +62,29 @@ if __name__ == "__main__":
 
     from vad_mini.models.efficientad.trainer import EfficientAdTrainer
 
-    trainer = EfficientAdTrainer(model_size="medium")
-    trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+    if 1:
+        trainer = EfficientAdTrainer(model_size="small")
+        trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
 
-    thresholds = trainer.calibrate_threshold(train_loader)
-    print()
-    print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
-    print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
-    print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
-    print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
-    print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
-    print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
+        thresholds = trainer.calibrate_threshold(train_loader)
+        print()
+        print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
+        print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
+        print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
+        print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
+        print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
+        print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
+
+    if 0:
+        trainer = EfficientAdTrainer(model_size="medium")
+        trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+
+        thresholds = trainer.calibrate_threshold(train_loader)
+        print()
+        print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
+        print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
+        print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
+        print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
+        print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
+        print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
+

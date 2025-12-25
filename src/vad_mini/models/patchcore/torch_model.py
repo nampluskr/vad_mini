@@ -50,7 +50,8 @@ from vad_mini.models.components.feature_extracotr import TimmFeatureExtractor
 from .anomaly_map import AnomalyMapGenerator
 
 if TYPE_CHECKING:
-    from anomalib.data.utils.tiler import Tiler
+    # from anomalib.data.utils.tiler import Tiler
+    from vad_mini.models.components.tiler import Tiler
 
 
 class PatchcoreModel(DynamicBufferMixin, nn.Module):

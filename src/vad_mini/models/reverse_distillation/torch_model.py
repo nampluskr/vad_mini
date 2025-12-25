@@ -48,7 +48,8 @@ from .anomaly_map import AnomalyMapGenerationMode, AnomalyMapGenerator
 from .bottleneck import get_bottleneck_layer
 
 if TYPE_CHECKING:
-    from anomalib.data.utils.tiler import Tiler
+    # from anomalib.data.utils.tiler import Tiler
+    from vad_mini.models.components.tiler import Tiler
 
 
 class ReverseDistillationModel(nn.Module):

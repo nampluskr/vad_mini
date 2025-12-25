@@ -15,7 +15,9 @@ from .torch_model import EfficientAdModel, EfficientAdModelSize, reduce_tensor_e
 
 
 class EfficientAdTrainer(BaseTrainer):
-    def __init__(self, teacher_out_channels=384, model_size="small", padding=False, pad_maps=True):
+    def __init__(self, teacher_out_channels=384, model_size="small", 
+        padding=False, pad_maps=True):
+
         model = EfficientAdModel(
             teacher_out_channels=teacher_out_channels,
             model_size=model_size,
