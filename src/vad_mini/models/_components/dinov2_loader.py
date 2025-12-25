@@ -9,7 +9,7 @@ framework. It supports both standard DINOv2 models and register-token variants, 
 allows custom Vision Transformer factories to be supplied.
 
 Example:
-    >>> from anomalib.models.components.dinov2 import DinoV2Loader
+    >>> from anomalib.models._components.dinov2 import DinoV2Loader
     >>> loader = DinoV2Loader()
     >>> model = loader.load("dinov2_vit_base_14")
     >>> model = loader.load("vit_base_14")
@@ -36,7 +36,7 @@ import torch
 
 # from anomalib.data.utils import DownloadInfo
 # from anomalib.data.utils.download import DownloadProgressBar
-# from anomalib.models.components.dinov2 import vision_transformer as dinov2_models
+# from anomalib.models._components.dinov2 import vision_transformer as dinov2_models
 from . import vision_transformer as dinov2_models
 
 logger = logging.getLogger(__name__)

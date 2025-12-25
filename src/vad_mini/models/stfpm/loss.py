@@ -13,7 +13,7 @@ The loss function:
 4. Scales the loss by spatial dimensions of feature maps
 
 Example:
-    >>> from anomalib.models.components import TimmFeatureExtractor
+    >>> from anomalib.models._components import TimmFeatureExtractor
     >>> from anomalib.models.image.stfpm.loss import STFPMLoss
     >>> from torchvision.models import resnet18
     >>> layers = ["layer1", "layer2", "layer3"]
@@ -55,7 +55,7 @@ class STFPMLoss(nn.Module):
     4. Summing losses across all feature layers
 
     Example:
-        >>> from anomalib.models.components import TimmFeatureExtractor
+        >>> from anomalib.models._components import TimmFeatureExtractor
         >>> from anomalib.models.image.stfpm.loss import STFPMLoss
         >>> from torchvision.models import resnet18
         >>> layers = ["layer1", "layer2", "layer3"]

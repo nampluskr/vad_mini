@@ -27,12 +27,12 @@ from torch import nn
 from torch.nn import functional as F  # noqa: N812
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models.components import DynamicBufferMixin, KCenterGreedy
-# from anomalib.models.components.dinov2 import DinoV2Loader
+# from anomalib.models._components import DynamicBufferMixin, KCenterGreedy
+# from anomalib.models._components.dinov2 import DinoV2Loader
 # from anomalib.models.image.patchcore.anomaly_map import AnomalyMapGenerator
-from vad_mini.models.components.dynamic_buffer import DynamicBufferMixin
-from vad_mini.models.components.k_center_greedy import KCenterGreedy
-from vad_mini.models.components.dinov2_loader import DinoV2Loader
+from vad_mini.models._components.dynamic_buffer import DynamicBufferMixin
+from vad_mini.models._components.k_center_greedy import KCenterGreedy
+from vad_mini.models._components.dinov2_loader import DinoV2Loader
 from vad_mini.models.patchcore.anomaly_map import AnomalyMapGenerator
 
 

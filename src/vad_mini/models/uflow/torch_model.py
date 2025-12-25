@@ -24,8 +24,8 @@ from FrEIA import modules as fm
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models.components.flow import AllInOneBlock
-from vad_mini.models.components.all_in_one_block import AllInOneBlock
+# from anomalib.models._components.flow import AllInOneBlock
+from vad_mini.models._components.all_in_one_block import AllInOneBlock
 
 from .anomaly_map import AnomalyMapGenerator
 from .feature_extraction import get_feature_extractor

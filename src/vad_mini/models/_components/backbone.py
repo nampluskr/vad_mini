@@ -17,7 +17,7 @@ Functions:
   * Returns path for safetensors or .pth files depending on backbone type
 
 Example:
-    >>> from models.components.backbone import set_backbone_dir, get_backbone_path
+    >>> from models._components.backbone import set_backbone_dir, get_backbone_path
     >>> set_backbone_dir("/mnt/d/backbones")
     >>> path = get_backbone_path("resnet50")
     >>> # Returns: "/mnt/d/backbones/resnet50-0676ba61.pth"

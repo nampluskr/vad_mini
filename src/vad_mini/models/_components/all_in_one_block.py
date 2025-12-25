@@ -32,7 +32,7 @@ where:
 
 Example:
     >>> import torch
-    >>> from anomalib.models.components.flow import AllInOneBlock
+    >>> from anomalib.models._components.flow import AllInOneBlock
     >>> # Create flow block
     >>> def subnet_fc(c_in, c_out):
     ...     return torch.nn.Sequential(

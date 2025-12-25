@@ -8,7 +8,7 @@ the Gaussian kernel during initialization for efficiency.
 
 Example:
     >>> import torch
-    >>> from anomalib.models.components.filters import GaussianBlur2d
+    >>> from anomalib.models._components.filters import GaussianBlur2d
     >>> # Create a Gaussian blur filter
     >>> blur = GaussianBlur2d(sigma=1.0, channels=3)
     >>> # Apply blur to input tensor

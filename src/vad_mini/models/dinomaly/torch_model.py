@@ -21,16 +21,16 @@ from timm.layers.drop import DropPath
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models.components import GaussianBlur2d
-# from anomalib.models.components.dinov2 import DinoV2Loader
+# from anomalib.models._components import GaussianBlur2d
+# from anomalib.models._components.dinov2 import DinoV2Loader
 # from anomalib.models.image.dinomaly.components import CosineHardMiningLoss, DinomalyMLP, LinearAttention
 # from anomalib.models.image.dinomaly.components import vision_transformer as dinomaly_vision_transformer
 
-from vad_mini.models.components.blur import GaussianBlur2d
-from vad_mini.models.components.dinov2_loader import DinoV2Loader
+from vad_mini.models._components.blur import GaussianBlur2d
+from vad_mini.models._components.dinov2_loader import DinoV2Loader
 from .loss import CosineHardMiningLoss
 from .layers import DinomalyMLP, LinearAttention
-from vad_mini.models.components import vision_transformer as dinomaly_vision_transformer
+from vad_mini.models._components import vision_transformer as dinomaly_vision_transformer
 
 
 # Encoder architecture configurations for DINOv2 models.

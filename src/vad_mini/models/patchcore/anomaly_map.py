@@ -23,7 +23,7 @@ Example:
 See Also:
     - :class:`anomalib.models.image.patchcore.lightning_model.Patchcore`:
         Lightning implementation of the PatchCore model
-    - :class:`anomalib.models.components.GaussianBlur2d`:
+    - :class:`anomalib.models._components.GaussianBlur2d`:
         Gaussian blur module used for smoothing anomaly maps
 """
 
@@ -31,8 +31,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F  # noqa: N812
 
-# from anomalib.models.components import GaussianBlur2d
-from vad_mini.models.components.blur import GaussianBlur2d
+# from anomalib.models._components import GaussianBlur2d
+from vad_mini.models._components.blur import GaussianBlur2d
 
 
 class AnomalyMapGenerator(nn.Module):

@@ -34,14 +34,14 @@ import torch
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models.components import TimmFeatureExtractor
-from vad_mini.models.components.feature_extracotr import TimmFeatureExtractor
+# from anomalib.models._components import TimmFeatureExtractor
+from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
 
 from .anomaly_map import AnomalyMapGenerator
 
 if TYPE_CHECKING:
     # from anomalib.data.utils.tiler import Tiler
-    from vad_mini.models.components.tiler import Tiler
+    from vad_mini.models._components.tiler import Tiler
 
 
 class STFPMModel(nn.Module):

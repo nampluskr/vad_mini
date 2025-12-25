@@ -28,8 +28,8 @@ import torch
 import torch.nn.functional as F  # noqa: N812
 from torch import nn
 
-# from anomalib.models.components.feature_extractors import TimmFeatureExtractor
-from vad_mini.models.components.feature_extracotr import TimmFeatureExtractor
+# from anomalib.models._components.feature_extractors import TimmFeatureExtractor
+from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
 
 AVAILABLE_EXTRACTORS = ["mcait", "resnet18", "wide_resnet50_2"]
 
@@ -205,7 +205,7 @@ class CaitFeatureExtractor(nn.Module):
         super().__init__()
         self.input_size = 448
 
-        from vad_mini.models.components.backbone import get_backbone_path
+        from vad_mini.models._components.backbone import get_backbone_path
         from safetensors.torch import load_file
 
         self.extractor1 = timm.create_model("cait_m48_448", pretrained=False)

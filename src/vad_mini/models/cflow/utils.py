@@ -19,8 +19,8 @@ import torch
 from FrEIA.framework import SequenceINN
 from torch import nn
 
-# from anomalib.models.components.flow import AllInOneBlock
-from vad_mini.models.components.all_in_one_block import AllInOneBlock
+# from anomalib.models._components.flow import AllInOneBlock
+from vad_mini.models._components.all_in_one_block import AllInOneBlock
 
 logger = logging.getLogger(__name__)
 

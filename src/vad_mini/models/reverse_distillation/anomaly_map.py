@@ -38,8 +38,8 @@ from omegaconf import ListConfig
 from torch import nn
 from torch.nn import functional as F  # noqa: N812
 
-# from anomalib.models.components import GaussianBlur2d
-from vad_mini.models.components.blur import GaussianBlur2d
+# from anomalib.models._components import GaussianBlur2d
+from vad_mini.models._components.blur import GaussianBlur2d
 
 
 class AnomalyMapGenerationMode(str, Enum):

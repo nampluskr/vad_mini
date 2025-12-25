@@ -19,7 +19,7 @@ import torch
 from torch import Tensor, nn
 from torch.nn import functional as F  # noqa: N812
 
-# from anomalib.models.components.dinov2.layers import Attention, DropPath, LayerScale, MemEffAttention
+# from anomalib.models._components.dinov2.layers import Attention, DropPath, LayerScale, MemEffAttention
 from .attention import Attention, MemEffAttention
 from .drop_path import DropPath
 from .layer_scale import LayerScale

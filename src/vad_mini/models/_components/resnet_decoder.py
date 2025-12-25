@@ -19,7 +19,7 @@ The module contains:
 - Full decoder network architecture
 
 Example:
-    >>> from anomalib.models.components.backbone.resnet_decoder import (
+    >>> from anomalib.models._components.backbone.resnet_decoder import (
     ...     get_decoder
     ... )
     >>> decoder = get_decoder()
@@ -27,7 +27,7 @@ Example:
     >>> reconstructed = decoder(features)
 
 See Also:
-    - :class:`anomalib.models.components.backbone.resnet_decoder.DecoderBasicBlock`:
+    - :class:`anomalib.models._components.backbone.resnet_decoder.DecoderBasicBlock`:
         Basic building block for the decoder network
 """
 
@@ -184,7 +184,7 @@ class DecoderBottleneck(nn.Module):
 
     Example:
         >>> import torch
-        >>> from anomalib.models.components.backbone.resnet_decoder import (
+        >>> from anomalib.models._components.backbone.resnet_decoder import (
         ...     DecoderBottleneck
         ... )
         >>> layer = DecoderBottleneck(256, 64)
@@ -295,7 +295,7 @@ class ResNetDecoder(nn.Module):
             layer to use. If ``None``, uses ``BatchNorm2d``. Defaults to ``None``.
 
     Example:
-        >>> from anomalib.models.components.backbone.resnet_decoder import (
+        >>> from anomalib.models._components.backbone.resnet_decoder import (
         ...     DecoderBasicBlock,
         ...     ResNetDecoder
         ... )
