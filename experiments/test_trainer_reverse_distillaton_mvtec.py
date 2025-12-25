@@ -71,7 +71,7 @@ if __name__ == "__main__":
     from vad_mini.models.reverse_distillation.trainer import ReverseDistillationTrainer
 
     trainer = ReverseDistillationTrainer(backbone="wide_resnet50_2", anomaly_map_mode="add")
-    train_outputs = trainer.fit(train_loader, num_epochs=10, valid_loader=test_loader)
+    train_outputs = trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
     thresholds = trainer.calibrate_threshold(train_loader)
 
     print()

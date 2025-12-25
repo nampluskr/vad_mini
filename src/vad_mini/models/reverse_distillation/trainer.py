@@ -29,6 +29,8 @@ class ReverseDistillationTrainer(BaseTrainer):
             lr=0.005,
             betas=(0.5, 0.99),
         )
+        self.scheduler = None
+        self.gradient_clip_val = None
 
     def configure_early_stoppers(self):
         self.train_early_stopper = None

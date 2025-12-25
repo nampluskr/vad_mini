@@ -35,12 +35,12 @@ class EfficientAdTrainer(BaseTrainer):
             lr=1e-4,
             weight_decay=1e-5,
         )
-        
         self.scheduler = optim.lr_scheduler.StepLR(
             self.optimizer,
-            step_size=int(0.95 * self.num_steps),
+            step_size=int(0.95 * self.max_steps),
             gamma=0.1
         )
+        self.gradient_clip_val = None
 
     def configure_early_stoppers(self):
         self.train_early_stopper = None

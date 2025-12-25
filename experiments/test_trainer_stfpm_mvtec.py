@@ -70,8 +70,8 @@ if __name__ == "__main__":
 
     from vad_mini.models.stfpm.trainer import STFPMTrainer
 
-    trainer = STFPMTrainer(backbone="resnet34")
-    train_outputs = trainer.fit(train_loader, num_epochs=10, valid_loader=test_loader)
+    trainer = STFPMTrainer(backbone="resnet50")
+    train_outputs = trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
     thresholds = trainer.calibrate_threshold(train_loader)
 
     print()

@@ -20,12 +20,13 @@ class STFPMTrainer(BaseTrainer):
     def configure_optimizers(self):
         self.optimizer = optim.SGD(
             params=self.model.student_model.parameters(),
-            lr=0.2,         # default: lr=0.4
+            lr=0.4,         # default lr=0.4
             momentum=0.9,
             dampening=0.0,
             weight_decay=0.001,
         )
         self.scheduler = None
+        self.gradient_clip_val = 1.0
 
     def configure_early_stoppers(self):
         self.train_early_stopper = None

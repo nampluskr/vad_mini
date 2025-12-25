@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from tqdm import tqdm
 
 import torch
+from torch.nn.utils import clip_grad_norm_
 from torchmetrics.classification import BinaryAUROC, BinaryAveragePrecision
 from torchmetrics.functional.classification import binary_roc
 
@@ -75,17 +76,26 @@ class BaseTrainer(ABC):
         self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = model.to(self.device)
         self.loss_fn = loss_fn.to(self.device) if isinstance(loss_fn, torch.nn.Module) else loss_fn
-        self.optimizer = None
-        self.scheduler = None
 
-        self.global_epoch = 0
-        self.num_epochs = None
         self.train_loader = None
         self.valid_loader = None
 
+        # configure optimizers
+        self.optimizer = None
+        self.scheduler = None
+        self.gradient_clip_val = None
+
+        # configure early stoppers
         self.train_early_stopper = None
         self.valid_early_stopper = None
 
+        # training epochs and steps
+        self.global_epoch = 0
+        self.global_step = 0
+        self.max_epochs = None
+        self.max_steps = None
+
+        # validation metrics
         self.aucroc = BinaryAUROC().to(self.device)
         self.aupr = BinaryAveragePrecision().to(self.device)
 
@@ -110,12 +120,12 @@ class BaseTrainer(ABC):
         raise NotImplementedError
 
     #######################################################
-    # fit: train model for num_epochs or num_steps
+    # fit: train model for max_epochs or max_steps
     #######################################################
 
-    def fit(self, train_loader, num_epochs, valid_loader=None):
-        self.num_epochs = num_epochs
-        self.num_steps = num_epochs * len(train_loader)
+    def fit(self, train_loader, max_epochs, valid_loader=None):
+        self.max_epochs = max_epochs
+        self.max_steps = max_epochs * len(train_loader)
         self.train_loader = train_loader
         self.valid_loader = valid_loader
 
@@ -125,7 +135,7 @@ class BaseTrainer(ABC):
         self.on_fit_start()
         self.on_train_start()
 
-        for _ in range(num_epochs):
+        for _ in range(max_epochs):
             self.on_train_epoch_start()
             train_outputs = self.train_one_epoch(train_loader)
             self.on_train_epoch_end(train_outputs)
@@ -152,14 +162,21 @@ class BaseTrainer(ABC):
         self.train_early_stop = False
         self.valid_early_stop = False
         self.current_epoch = 0
+        self.current_step = 0
         print("\n*** Training start...")
 
     def on_train_epoch_start(self):
         self.global_epoch += 1
         self.current_epoch += 1
 
+    def on_train_batch_start(self, batch, batch_idx): pass
+
+    def on_train_batch_end(self, outputs, batch, batch_idx):
+        self.global_step += 1
+        self.current_step += 1
+
     def on_train_epoch_end(self, outputs):
-        self.epoch_info = f"[{self.current_epoch:3d}/{self.num_epochs}]"
+        self.epoch_info = f"[{self.current_epoch:3d}/{self.max_epochs}]"
         self.train_info = ", ".join([f"{k}:{v:.3f}" for k, v in outputs.items()])
         if self.valid_loader is None:
             print(f"{self.epoch_info} {self.train_info}")
@@ -173,7 +190,16 @@ class BaseTrainer(ABC):
             elif self.train_early_stopper.early_stop:
                 self.early_stop_str += f"Training Early Stopped! {self.train_early_stopper.get_info()}"
 
+        if self.max_steps is not None:
+            if self.current_step >= self.max_steps:
+                self.train_early_stop = True
+                self.early_stop_str += f"Max training step reached! {self.current_step} steps"
+
     def on_validation_epoch_start(self): pass
+
+    def on_validation_batch_start(self, batch, batch_idx): pass
+
+    def on_validation_batch_end(self, outputs, batch, batch_idx): pass
 
     def on_validation_epoch_end(self, outputs):
         valid_info = ", ".join([f"{k}:{v:.3f}" for k, v in outputs.items()])
@@ -207,7 +233,9 @@ class BaseTrainer(ABC):
 
         with tqdm(train_loader, leave=False, ascii=True) as progress_bar:
             progress_bar.set_description(f">> Training")
-            for batch in progress_bar:
+            for batch_idx, batch in enumerate(progress_bar):
+                self.on_train_batch_start(batch, batch_idx)
+
                 self.optimizer.zero_grad()
                 batch_size = batch["image"].shape[0]
                 num_images += batch_size
@@ -216,6 +244,10 @@ class BaseTrainer(ABC):
                 loss = batch_outputs["loss"]
 
                 loss.backward()
+
+                if self.gradient_clip_val is not None and self.gradient_clip_val > 0:
+                    clip_grad_norm_(self.model.parameters(), max_norm=self.gradient_clip_val)
+
                 self.optimizer.step()
 
                 if self.scheduler is not None:
@@ -228,6 +260,7 @@ class BaseTrainer(ABC):
                     outputs[name] += value * batch_size
 
                 progress_bar.set_postfix({name: f"{value / num_images:.3f}" for name, value in outputs.items()})
+                self.on_train_batch_end(batch_outputs, batch, batch_idx)
 
         return {name: value / num_images for name, value in outputs.items()}
 
@@ -246,13 +279,17 @@ class BaseTrainer(ABC):
 
         with tqdm(valid_loader, leave=False, ascii=True) as progress_bar:
             progress_bar.set_description(f">> Validation")
-            for batch in progress_bar:
+            for batch_idx, batch in enumerate(progress_bar):
+                self.on_validation_batch_start(batch, batch_idx)
+
                 predictions = self.validation_step(batch)
                 pred_scores = predictions["pred_score"].flatten()
                 labels = predictions["label"]
 
                 all_pred_scores.append(pred_scores.cpu())
                 all_labels.append(labels.cpu())
+
+                self.on_validation_batch_end(predictions, batch, batch_idx)
 
         all_pred_scores = torch.cat(all_pred_scores, dim=0)
         all_labels = torch.cat(all_labels, dim=0)
