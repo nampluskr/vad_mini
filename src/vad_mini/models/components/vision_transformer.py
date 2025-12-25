@@ -25,8 +25,8 @@ from torch.nn.init import trunc_normal_
 
 # from anomalib.models.components.dinov2.layers import MemEffAttention
 # from anomalib.models.image.dinomaly.components.layers import Block, DinomalyMLP
-from .attention import MemEffAttention
-from .layers import Block, DinomalyMLP 
+from vad_mini.models.dinomaly.attention import MemEffAttention
+from vad_mini.models.dinomaly.layers import Block, DinomalyMLP
 
 logger = logging.getLogger("dinov2")
 

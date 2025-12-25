@@ -27,10 +27,10 @@ from torch import nn
 # from anomalib.models.image.dinomaly.components import vision_transformer as dinomaly_vision_transformer
 
 from vad_mini.models.components.blur import GaussianBlur2d
-from .dinov2_loader import DinoV2Loader
+from vad_mini.models.components.dinov2_loader import DinoV2Loader
 from .loss import CosineHardMiningLoss
 from .layers import DinomalyMLP, LinearAttention
-from . import vision_transformer as dinomaly_vision_transformer
+from vad_mini.models.components import vision_transformer as dinomaly_vision_transformer
 
 
 # Encoder architecture configurations for DINOv2 models.

@@ -37,7 +37,7 @@ import torch
 # from anomalib.data.utils import DownloadInfo
 # from anomalib.data.utils.download import DownloadProgressBar
 # from anomalib.models.components.dinov2 import vision_transformer as dinov2_models
-from . import  vision_transformer as dinov2_models
+from . import vision_transformer as dinov2_models
 
 logger = logging.getLogger(__name__)
 

@@ -4,14 +4,6 @@ source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
 if source_dir not in sys.path:
     sys.path.insert(0, source_dir)
 
-import os
-import numpy as numpy
-import matplotlib.pyplot as plt
-from PIL import Image
-
-import torch
-import torchvision.transforms as T
-
 from vad_mini.utils import set_seed
 from vad_mini.data.datasets import MVTecDataset
 from vad_mini.data.dataloaders import get_train_loader, get_test_loader
@@ -20,9 +12,9 @@ from vad_mini.data.transforms import get_train_transform, get_test_transform, ge
 
 DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
-CATEGORY = "tile"
-IMG_SIZE = 256
-BATCH_SIZE = 32
+CATEGORY = "bottle"
+IMG_SIZE = 448
+BATCH_SIZE = 16
 NORMALIZE = True
 SEED = 42
 
@@ -68,19 +60,35 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.reverse_distillation.trainer import ReverseDistillationTrainer
+    from vad_mini.models.uflow.trainer import CsfloUflowTrainer
 
-    trainer = ReverseDistillationTrainer(backbone="wide_resnet50_2", anomaly_map_mode="add")
-    train_outputs = trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
-    thresholds = trainer.calibrate_threshold(train_loader)
+    if 0:
+        trainer = CsfloUflowTrainer(backbone="mcait", input_size=(IMG_SIZE, IMG_SIZE))
+        train_outputs = trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+        thresholds = trainer.calibrate_threshold(train_loader)
 
-    print()
-    print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
-    print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
-    print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
-    print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
-    print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
-    print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
+        print()
+        print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
+        print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
+        print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
+        print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
+        print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
+        print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
+
+    if 1:
+        # BACKBONE = "wide_resnet50_2"
+        BACKBONE = "resnet18"
+        trainer = CsfloUflowTrainer(backbone=BACKBONE, input_size=(IMG_SIZE, IMG_SIZE))
+        train_outputs = trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+        thresholds = trainer.calibrate_threshold(train_loader)
+
+        print()
+        print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
+        print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
+        print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
+        print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
+        print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
+        print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")
 
 
     

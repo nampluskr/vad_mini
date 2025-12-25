@@ -4,14 +4,6 @@ source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
 if source_dir not in sys.path:
     sys.path.insert(0, source_dir)
 
-import os
-import numpy as numpy
-import matplotlib.pyplot as plt
-from PIL import Image
-
-import torch
-import torchvision.transforms as T
-
 from vad_mini.utils import set_seed
 from vad_mini.data.datasets import MVTecDataset
 from vad_mini.data.dataloaders import get_train_loader, get_test_loader
@@ -68,10 +60,10 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.fastflow.trainer import FastflowTrainer
+    from vad_mini.models.cflow.trainer import CflowTrainer
 
-    trainer = FastflowTrainer(backbone="wide_resnet50_2", input_size=(IMG_SIZE, IMG_SIZE))
-    train_outputs = trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+    trainer = CflowTrainer(backbone="resnet18")
+    train_outputs = trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
     thresholds = trainer.calibrate_threshold(train_loader)
 
     print()
