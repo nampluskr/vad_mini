@@ -21,9 +21,10 @@ from torch import nn
 
 # from anomalib.data import InferenceBatch
 # from anomalib.models.components.flow import AllInOneBlock
-from .all_in_one_block import AllInOneBlock
-from .anomaly_map import AnomalyMapGenerator
+from vad_mini.models.components.all_in_one_block import AllInOneBlock
 from vad_mini.models.components.backbone import get_backbone_path
+from .anomaly_map import AnomalyMapGenerator
+
 
 def subnet_conv_func(kernel_size: int, hidden_ratio: float) -> Callable:
     """Subnet Convolutional Function.
