@@ -29,37 +29,16 @@ class EfficientAdTrainer(BaseTrainer):
         self.imagenet_dir = Path("/mnt/d/deep_learning/datasets/imagenette2")
         self.batch_size = 1     # imagenet dataloader batch_size is 1
 
-        self.max_epochs = 10
-        self.max_steps = -1
-
     def configure_optimizers(self) -> torch.optim.Optimizer:
         self.optimizer = optim.Adam(
             list(self.model.student.parameters()) + list(self.model.ae.parameters()),
             lr=1e-4,
             weight_decay=1e-5,
         )
-
-        if self.max_epochs < 0 and self.max_steps < 0:
-            msg = "A finite number of steps or epochs must be defined"
-            raise ValueError(msg)
-
-        # lightning stops training when either 'max_steps' or 'max_epochs' is reached (earliest),
-        # so actual training steps need to be determined here
-        if self.max_epochs < 0:
-            # max_epochs not set
-            num_steps = self.max_steps
-        elif self.max_steps < 0:
-            # max_steps not set -> determine steps as 'max_epochs' * 'steps in a single training epoch'
-            num_steps = self.max_epochs * len(self.train_loader)
-        else:
-            num_steps = min(
-                self.max_steps,
-                self.max_epochs * len(self.train_loader),
-            )
-
+        
         self.scheduler = optim.lr_scheduler.StepLR(
             self.optimizer,
-            step_size=int(0.95 * num_steps),
+            step_size=int(0.95 * self.num_steps),
             gamma=0.1
         )
 
@@ -75,9 +54,9 @@ class EfficientAdTrainer(BaseTrainer):
         3. Prepares ImageNette dataset
         4. Calculates channel statistics
         """
-        # if self.trainer.datamodule.train_batch_size != 1:
-        #     msg = "train_batch_size for EfficientAd should be 1."
-        #     raise ValueError(msg)
+        if self.train_loader.batch_size != 1:
+            msg = "train batch_size for EfficientAd should be 1."
+            raise ValueError(msg)
 
         # if self.pre_processor and extract_transforms_by_type(self.pre_processor.transform, Normalize):
         #     msg = "Transforms for EfficientAd should not contain Normalize."
@@ -85,8 +64,10 @@ class EfficientAdTrainer(BaseTrainer):
 
         sample = next(iter(self.train_loader))
         image_size = sample["image"].shape[-2:]
+
         self.prepare_pretrained_model()
         self.prepare_imagenette_data(image_size)
+
         if not self.model.is_set(self.model.mean_std):
             channel_mean_std = self.teacher_channel_mean_std(self.train_loader)
             self.model.mean_std.update(channel_mean_std)
@@ -125,15 +106,16 @@ class EfficientAdTrainer(BaseTrainer):
         """Prepare the pretrained teacher model."""
 
         # pretrained_models_dir = Path("./pre_trained/")
-        pretrained_models_dir = self.backbone_dir
         # if not (pretrained_models_dir / "efficientad_pretrained_weights").is_dir():
         #     download_and_extract(pretrained_models_dir, WEIGHTS_DOWNLOAD_INFO)
+
+        pretrained_models_dir = self.backbone_dir
         model_size_str = self.model_size.value if isinstance(self.model_size, EfficientAdModelSize) else self.model_size
         teacher_path = (
             pretrained_models_dir / "efficientad_pretrained_weights" / f"pretrained_teacher_{model_size_str}.pth"
         )
         # logger.info(f"Load pretrained teacher model from {teacher_path}")
-        print(f"Load pretrained teacher model from {teacher_path}")
+        print(f" > Load pretrained teacher model from {teacher_path}")
         self.model.teacher.load_state_dict(
             torch.load(teacher_path, map_location=torch.device(self.device), weights_only=True),
         )
@@ -150,8 +132,8 @@ class EfficientAdTrainer(BaseTrainer):
             ],
         )
 
-        if not self.imagenet_dir.is_dir():
-            download_and_extract(self.imagenet_dir, IMAGENETTE_DOWNLOAD_INFO)
+        # if not self.imagenet_dir.is_dir():
+        #     download_and_extract(self.imagenet_dir, IMAGENETTE_DOWNLOAD_INFO)
         imagenet_dataset = ImageFolder(self.imagenet_dir, transform=self.data_transforms_imagenet)
         self.imagenet_loader = DataLoader(imagenet_dataset, batch_size=self.batch_size, shuffle=True, pin_memory=True)
         self.imagenet_iterator = iter(self.imagenet_loader)
@@ -165,8 +147,7 @@ class EfficientAdTrainer(BaseTrainer):
         chanel_sum: torch.Tensor | None = None
         chanel_sum_sqr: torch.Tensor | None = None
 
-        # print("Calculate teacher channel mean & std")
-        for batch in tqdm.tqdm(dataloader, desc="Calculate teacher channel mean & std", ascii=True, leave=False):
+        for batch in tqdm.tqdm(dataloader, desc=" > Calculate teacher channel mean & std", ascii=True, leave=False):
             y = self.model.teacher(batch["image"].to(self.device))
             if not arrays_defined:
                 _, num_channels, _, _ = y.shape
@@ -195,9 +176,8 @@ class EfficientAdTrainer(BaseTrainer):
         maps_st = []
         maps_ae = []
         # logger.info("Calculate Validation Dataset Quantiles")
-        # print("Calculate Validation Dataset Quantiles")
 
-        for batch in tqdm.tqdm(dataloader, desc="Calculate Validation Dataset Quantiles", ascii=True, leave=False):
+        for batch in tqdm.tqdm(dataloader, desc=" > Calculate Validation Dataset Quantiles", ascii=True, leave=False):
             for img, label in zip(batch["image"], batch["label"], strict=True):
                 if label == 0:  # only use good images of validation set!
                     map_st, map_ae = self.model.get_maps(img.to(self.device), normalize=False)
