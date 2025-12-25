@@ -1,3 +1,6 @@
+# Personal paths
+#configs/paths.yaml
+
 # Python
 __pycache__/
 *.pyc

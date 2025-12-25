@@ -1,0 +1,22 @@
+# configs/paths.yaml
+
+profile: wsl
+
+profiles:
+  wsl:
+    backbone_dir: /mnt/d/deep_learning/backbones
+    dataset_dir: /mnt/d/datasets/mvtec
+    output_dir: /mnt/d/experiments/vad_mini/outputs
+    cache_dir: /mnt/d/experiments/vad_mini/cache
+
+  linux:
+    backbone_dir: /data/backbones
+    dataset_dir: /data/datasets/mvtec
+    output_dir: /data/outputs/vad_mini
+    cache_dir: /data/cache/vad_mini
+
+  windows:
+    backbone_dir: D:/deep_learning/backbones
+    dataset_dir: D:/datasets/mvtec
+    output_dir: D:/experiments/vad_mini/outputs
+    cache_dir: D:/experiments/vad_mini/cache
