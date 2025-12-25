@@ -73,11 +73,11 @@ class CflowTrainer(BaseTrainer):
                 positional_encoding_2d(self.model.condition_vector, im_height, im_width).unsqueeze(0),
                 "b c h w-> (tile b) c h w",
                 tile=batch_size,
-            ).to(images.device)
+            ).to(self.device)
             c_r = einops.rearrange(pos_encoding, "b c h w -> (b h w) c")  # BHWxP
             e_r = einops.rearrange(encoder_activations, "b c h w -> (b h w) c")  # BHWxC
             perm = torch.randperm(embedding_length)  # BHW
-            decoder = self.model.decoders[layer_idx].to(images.device)
+            decoder = self.model.decoders[layer_idx].to(self.device)
 
             fiber_batches = embedding_length // self.model.fiber_batch_size  # number of fiber batches
             if fiber_batches <= 0:
@@ -105,5 +105,5 @@ class CflowTrainer(BaseTrainer):
                 self.decoder_optimizer.step()
                 avg_loss += loss.sum()
 
-        return {"loss": avg_loss.detach().item()}
+        return {"loss": avg_loss.detach()}
 
