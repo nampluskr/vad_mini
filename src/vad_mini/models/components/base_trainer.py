@@ -115,10 +115,6 @@ class BaseTrainer(ABC):
     def training_step(self, batch):
         raise NotImplementedError
 
-    @abstractmethod
-    def validation_step(self, batch):
-        raise NotImplementedError
-
     #######################################################
     # fit: train model for max_epochs or max_steps
     #######################################################
@@ -199,6 +195,11 @@ class BaseTrainer(ABC):
 
     def on_validation_batch_start(self, batch, batch_idx): pass
 
+    def validation_step(self, batch):
+        images = batch["image"].to(self.device)
+        predictions = self.model(images)
+        return {**batch, **predictions}
+
     def on_validation_batch_end(self, outputs, batch, batch_idx): pass
 
     def on_validation_epoch_end(self, outputs):
@@ -236,22 +237,22 @@ class BaseTrainer(ABC):
             for batch_idx, batch in enumerate(progress_bar):
                 self.on_train_batch_start(batch, batch_idx)
 
-                self.optimizer.zero_grad()
                 batch_size = batch["image"].shape[0]
                 num_images += batch_size
-
                 batch_outputs = self.training_step(batch)
-                loss = batch_outputs["loss"]
 
-                loss.backward()
+                if self.optimizer is not None:
+                    self.optimizer.zero_grad()
+                    loss = batch_outputs["loss"]
+                    loss.backward()
 
-                if self.gradient_clip_val is not None and self.gradient_clip_val > 0:
-                    clip_grad_norm_(self.model.parameters(), max_norm=self.gradient_clip_val)
+                    if self.gradient_clip_val is not None and self.gradient_clip_val > 0:
+                        clip_grad_norm_(self.model.parameters(), max_norm=self.gradient_clip_val)
 
-                self.optimizer.step()
+                    self.optimizer.step()
 
-                if self.scheduler is not None:
-                    self.scheduler.step()
+                    if self.scheduler is not None:
+                        self.scheduler.step()
 
                 for name, value in batch_outputs.items():
                     if isinstance(value, torch.Tensor):

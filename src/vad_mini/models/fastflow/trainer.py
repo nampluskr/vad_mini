@@ -41,8 +41,3 @@ class FastflowTrainer(BaseTrainer):
         hidden_variables, jacobians = self.model(images)
         loss = self.loss_fn(hidden_variables, jacobians)
         return {"loss": loss}
-
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}

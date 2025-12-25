@@ -38,8 +38,3 @@ class STFPMTrainer(BaseTrainer):
         teacher_features, student_features = self.model.forward(images)
         loss = self.loss_fn(teacher_features, student_features)
         return dict(loss=loss)
-
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}

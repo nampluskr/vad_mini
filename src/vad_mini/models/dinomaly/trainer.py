@@ -90,11 +90,6 @@ class DinomalyTrainer(BaseTrainer):
         loss = self.model(images, global_step=self.current_step)
         return {"loss": loss}
 
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}
-
     @staticmethod
     def _initialize_trainable_modules(trainable_modules: torch.nn.ModuleList) -> None:
         for m in trainable_modules.modules():

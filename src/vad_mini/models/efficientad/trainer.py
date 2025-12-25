@@ -95,10 +95,6 @@ class EfficientAdTrainer(BaseTrainer):
 
         super().on_validation_epoch_start()
 
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}
 
     #################################################################
     # src/anomalib/models/image/efficient_ad/lightning_model.py

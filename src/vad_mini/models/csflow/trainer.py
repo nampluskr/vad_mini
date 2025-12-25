@@ -43,8 +43,3 @@ class CsflowTrainer(BaseTrainer):
         z_dist, jacobians = self.model(images)
         loss = self.loss_fn(z_dist, jacobians)
         return {"loss": loss}
-
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}

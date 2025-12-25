@@ -40,9 +40,3 @@ class ReverseDistillationTrainer(BaseTrainer):
         images = batch["image"].to(self.device)
         loss = self.loss_fn(*self.model(images))
         return {"loss": loss}
-    
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}
-    

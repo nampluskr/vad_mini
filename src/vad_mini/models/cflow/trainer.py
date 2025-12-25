@@ -104,10 +104,5 @@ class CflowTrainer(BaseTrainer):
                 self.optimizer.step()
                 avg_loss += loss.sum()
 
-        self.log("train_loss", avg_loss.item(), on_epoch=True, prog_bar=True, logger=True)
         return {"loss": avg_loss}
 
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}
