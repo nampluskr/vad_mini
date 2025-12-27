@@ -205,7 +205,7 @@ class CaitFeatureExtractor(nn.Module):
         super().__init__()
         self.input_size = 448
 
-        from vad_mini.components.backbone import get_backbone_path
+        from vad_mini.common.backbone import get_backbone_path
         from safetensors.torch import load_file
 
         self.extractor1 = timm.create_model("cait_m48_448", pretrained=False)

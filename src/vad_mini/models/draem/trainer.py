@@ -6,10 +6,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from vad_mini.components.base_trainer import BaseTrainer
+from vad_mini.common.base_trainer import BaseTrainer
 from .torch_model import DraemModel
 from .loss import DraemLoss
-from .._components.perlin import PerlinAnomalyGenerator
+from vad_mini.components.perlin import PerlinAnomalyGenerator
 
 
 class DraemTrainer(BaseTrainer):

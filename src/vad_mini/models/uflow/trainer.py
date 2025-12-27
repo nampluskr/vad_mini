@@ -3,7 +3,7 @@
 import torch
 import torch.optim as optim
 
-from vad_mini.components.base_trainer import BaseTrainer
+from vad_mini.common.base_trainer import BaseTrainer
 from .torch_model import UflowModel
 from .loss import UFlowLoss
 

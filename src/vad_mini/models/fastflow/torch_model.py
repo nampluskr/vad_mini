@@ -22,7 +22,7 @@ from torch import nn
 # from anomalib.data import InferenceBatch
 # from anomalib.components.flow import AllInOneBlock
 from vad_mini.components.all_in_one_block import AllInOneBlock
-from vad_mini.components.backbone import get_backbone_path
+from vad_mini.common.backbone import get_backbone_path
 from .anomaly_map import AnomalyMapGenerator
 
 

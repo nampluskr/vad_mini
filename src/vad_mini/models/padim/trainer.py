@@ -1,25 +1,21 @@
-# src/vad_mini/models/patchcore/trainer.py
+# src/vad_mini/models/padim/trainer.py
 
 import torch
 import torch.optim as optim
 
 from vad_mini.common.base_trainer import BaseTrainer
-from .torch_model import PatchcoreModel
+from .torch_model import PadimModel
 
 
-class PatchcoreTrainer(BaseTrainer):
-    def __init__(self, backbone="wide_resnet50_2", layers=["layer2", "layer3"],
-        pre_trained=True, num_neighbors=9, coreset_sampling_ratio=0.1):
+class PadimTrainer(BaseTrainer):
+    def __init__(self, backbone="resent50", layers=["layer1", "layer2", "layer3"], n_features=None):
 
-        model = PatchcoreModel(
+        model = PadimModel(
             backbone=backbone,
-            pre_trained=pre_trained,
             layers=layers,
-            num_neighbors=num_neighbors,
+            n_features=n_features,
         )
         super().__init__(model, loss_fn=None)
-
-        self.coreset_sampling_ratio = coreset_sampling_ratio
 
     def on_train_start(self):
         super().on_train_start()
@@ -32,4 +28,4 @@ class PatchcoreTrainer(BaseTrainer):
 
     def on_train_end(self):
         super().on_train_end()
-        self.model.subsample_embedding(sampling_ratio=self.coreset_sampling_ratio)
+        self.model.fit()

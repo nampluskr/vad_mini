@@ -1,4 +1,5 @@
-# experiments/test_draem_mvtec.py
+# experiments/test_padim_mvtec.py
+
 import os, sys
 source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
 if source_dir not in sys.path:
@@ -12,9 +13,10 @@ from vad_mini.data.transforms import get_train_transform, get_test_transform, ge
 
 DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
-CATEGORY = "bottle"
+CATEGORY = "capsule"
 IMG_SIZE = 256
 CROP_SIZE = None
+CROP_SIZE = 224
 BATCH_SIZE = 8
 NORMALIZE = False
 SEED = 42
@@ -61,8 +63,10 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.draem.trainer import DraemTrainer
+    from vad_mini.models.padim.trainer import PadimTrainer
 
-    trainer = DraemTrainer(dtd_dir="/mnt/d/deep_learning/datasets/dtd")
-    trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
+    trainer = PadimTrainer(backbone="resnet18", layers=["layer1", "layer2", "layer3"])
+    trainer.fit(train_loader, max_epochs=1)
+    results = trainer.validate(test_loader)
+    print(">> " + ", ".join([f"{k}:{v:.3f}" for k, v in results.items()]))
 

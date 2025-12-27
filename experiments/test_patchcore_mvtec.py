@@ -40,7 +40,7 @@ if __name__ == "__main__":
         root_dir=DATA_DIR,
         category=CATEGORY,
         split="test",
-        transform=get_train_transform(img_size=IMG_SIZE, crop_size=CROP_SIZE, normalize=NORMALIZE),
+        transform=get_test_transform(img_size=IMG_SIZE, crop_size=CROP_SIZE, normalize=NORMALIZE),
         mask_transform=get_mask_transform(img_size=IMG_SIZE if CROP_SIZE is None else CROP_SIZE),
     )
     train_loader = get_train_loader(

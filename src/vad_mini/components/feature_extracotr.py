@@ -10,7 +10,7 @@ from torch import nn
 from torchvision.models.feature_extraction import create_feature_extractor
 from torch.fx.graph_module import GraphModule
 
-from .backbone import get_backbone_path
+from ..common.backbone import get_backbone_path
 
 
 logger = logging.getLogger(__name__)
