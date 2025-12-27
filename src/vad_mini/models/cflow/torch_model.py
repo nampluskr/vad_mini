@@ -38,8 +38,8 @@ import torch
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models._components import TimmFeatureExtractor
-from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
+# from anomalib.components import TimmFeatureExtractor
+from vad_mini.components.feature_extracotr import TimmFeatureExtractor
 
 from .anomaly_map import AnomalyMapGenerator
 from .utils import cflow_head, get_logp, positional_encoding_2d

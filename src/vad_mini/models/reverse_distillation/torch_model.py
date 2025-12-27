@@ -38,18 +38,18 @@ import torch
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models._components import TimmFeatureExtractor
-# from anomalib.models._components.backbone import get_decoder
+# from anomalib.components import TimmFeatureExtractor
+# from anomalib.components.backbone import get_decoder
 
-from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
-from vad_mini.models._components.resnet_decoder import get_decoder
+from vad_mini.components.feature_extracotr import TimmFeatureExtractor
+from vad_mini.components.resnet_decoder import get_decoder
 
 from .anomaly_map import AnomalyMapGenerationMode, AnomalyMapGenerator
 from .bottleneck import get_bottleneck_layer
 
 if TYPE_CHECKING:
     # from anomalib.data.utils.tiler import Tiler
-    from vad_mini.models._components.tiler import Tiler
+    from vad_mini.components.tiler import Tiler
 
 
 class ReverseDistillationModel(nn.Module):

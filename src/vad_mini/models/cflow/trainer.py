@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from vad_mini.models._components.base_trainer import BaseTrainer
+from vad_mini.components.base_trainer import BaseTrainer
 from .torch_model import CflowModel
 from .utils import get_logp, positional_encoding_2d
 

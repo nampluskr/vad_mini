@@ -8,7 +8,7 @@ import torch.optim as optim
 from torch.nn.init import trunc_normal_
 from torchvision.transforms.v2 import CenterCrop, Compose, Normalize, Resize
 
-from vad_mini.models._components.base_trainer import BaseTrainer
+from vad_mini.components.base_trainer import BaseTrainer
 from .torch_model import DinomalyModel
 from .optimizer import StableAdamW, WarmCosineScheduler
 

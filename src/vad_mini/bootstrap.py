@@ -2,7 +2,7 @@
 
 import os
 from vad_mini.config import load_yaml, resolve_paths_cfg, validate_paths
-from vad_mini.models._components.backbone import set_backbone_dir
+from vad_mini.components.backbone import set_backbone_dir
 
 
 def init_from_paths_yaml(paths_yaml: str = "configs/paths.yaml") -> dict:

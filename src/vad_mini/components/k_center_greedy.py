@@ -12,7 +12,7 @@ Reference:
 import torch
 from tqdm import tqdm
 
-# from anomalib.models._components.dimensionality_reduction import SparseRandomProjection
+# from anomalib.components.dimensionality_reduction import SparseRandomProjection
 from .random_projection import SparseRandomProjection
 
 

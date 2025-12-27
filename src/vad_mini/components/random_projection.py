@@ -8,7 +8,7 @@ dimensionality reduction.
 
 Example:
     >>> import torch
-    >>> from anomalib.models._components import SparseRandomProjection
+    >>> from anomalib.components import SparseRandomProjection
     >>> # Create sample data
     >>> data = torch.randn(100, 50)  # 100 samples, 50 features
     >>> # Initialize projector
@@ -47,7 +47,7 @@ class SparseRandomProjection:
 
     Example:
         >>> import torch
-        >>> from anomalib.models._components import SparseRandomProjection
+        >>> from anomalib.components import SparseRandomProjection
         >>> # Create sample data
         >>> data = torch.randn(100, 50)  # 100 samples, 50 features
         >>> # Initialize and fit projector

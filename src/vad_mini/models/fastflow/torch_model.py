@@ -20,9 +20,9 @@ from timm.models.vision_transformer import VisionTransformer
 from torch import nn
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models._components.flow import AllInOneBlock
-from vad_mini.models._components.all_in_one_block import AllInOneBlock
-from vad_mini.models._components.backbone import get_backbone_path
+# from anomalib.components.flow import AllInOneBlock
+from vad_mini.components.all_in_one_block import AllInOneBlock
+from vad_mini.components.backbone import get_backbone_path
 from .anomaly_map import AnomalyMapGenerator
 
 

@@ -10,7 +10,7 @@ from torchvision.transforms import CenterCrop, Compose, Normalize, RandomGraysca
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
-from vad_mini.models._components.base_trainer import BaseTrainer, EarlyStopper
+from vad_mini.components.base_trainer import BaseTrainer, EarlyStopper
 from .torch_model import EfficientAdModel, EfficientAdModelSize, reduce_tensor_elems
 
 

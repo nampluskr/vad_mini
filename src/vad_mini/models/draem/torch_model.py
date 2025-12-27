@@ -20,7 +20,7 @@ from torch import nn
 
 # from anomalib.data import InferenceBatch
 # from anomalib.models.components.layers import SSPCAB
-from vad_mini.models._components.sspcab import SSPCAB
+from vad_mini.components.sspcab import SSPCAB
 
 
 class DraemModel(nn.Module):

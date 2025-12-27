@@ -15,6 +15,7 @@ DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 CATEGORY = "capsule"
 IMG_SIZE = 256
 BATCH_SIZE = 8
+CROP_SIZE = None
 NORMALIZE = False
 SEED = 42
 
@@ -31,15 +32,15 @@ if __name__ == "__main__":
         root_dir=DATA_DIR,
         category=CATEGORY,
         split="train",
-        transform=get_train_transform(img_size=IMG_SIZE, normalize=NORMALIZE),
-        mask_transform=get_mask_transform(img_size=IMG_SIZE),
+        transform=get_train_transform(img_size=IMG_SIZE, crop_size=CROP_SIZE, normalize=NORMALIZE),
+        mask_transform=get_mask_transform(img_size=IMG_SIZE if CROP_SIZE is None else CROP_SIZE),
     )
     test_dataset = MVTecDataset(
         root_dir=DATA_DIR,
         category=CATEGORY,
         split="test",
-        transform=get_test_transform(img_size=IMG_SIZE, normalize=NORMALIZE),
-        mask_transform=get_mask_transform(img_size=IMG_SIZE),
+        transform=get_train_transform(img_size=IMG_SIZE, crop_size=CROP_SIZE, normalize=NORMALIZE),
+        mask_transform=get_mask_transform(img_size=IMG_SIZE if CROP_SIZE is None else CROP_SIZE),
     )
     train_loader = get_train_loader(
         dataset=train_dataset,
@@ -65,11 +66,3 @@ if __name__ == "__main__":
     trainer = DraemTrainer(dtd_dir="/mnt/d/deep_learning/datasets/dtd")
     trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)
 
-    thresholds = trainer.calibrate_threshold(train_loader)
-    print()
-    print(f">> quantile threshold (99%): {thresholds['99%']:.3f}")
-    print(f">> quantile threshold (97%): {thresholds['97%']:.3f}")
-    print(f">> quantile threshold (95%): {thresholds['95%']:.3f}")
-    print(f">> mean_std threshold (3-sigma): {thresholds['3-sigma']:.3f}")
-    print(f">> mean_std threshold (2-sigma): {thresholds['2-sigma']:.3f}")
-    print(f">> mean_std threshold (1-sigma): {thresholds['1-sigma']:.3f}")

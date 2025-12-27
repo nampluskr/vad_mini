@@ -29,7 +29,7 @@ See Also:
         Lightning implementation of the PatchCore model
     - :class:`anomalib.models.image.patchcore.anomaly_map.AnomalyMapGenerator`:
         Anomaly map generation for PatchCore using nearest neighbor search
-    - :class:`anomalib.models._components.KCenterGreedy`:
+    - :class:`anomalib.components.KCenterGreedy`:
         Coreset subsampling using k-center-greedy approach
 """
 
@@ -41,17 +41,17 @@ from torch import nn
 from torch.nn import functional as F  # noqa: N812
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models._components import DynamicBufferMixin, KCenterGreedy, TimmFeatureExtractor
+# from anomalib.components import DynamicBufferMixin, KCenterGreedy, TimmFeatureExtractor
 # from anomalib.utils import deprecate
-from vad_mini.models._components.dynamic_buffer import DynamicBufferMixin
-from vad_mini.models._components.k_center_greedy import KCenterGreedy
-from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
+from vad_mini.components.dynamic_buffer import DynamicBufferMixin
+from vad_mini.components.k_center_greedy import KCenterGreedy
+from vad_mini.components.feature_extracotr import TimmFeatureExtractor
 
 from .anomaly_map import AnomalyMapGenerator
 
 if TYPE_CHECKING:
     # from anomalib.data.utils.tiler import Tiler
-    from vad_mini.models._components.tiler import Tiler
+    from vad_mini.components.tiler import Tiler
 
 
 class PatchcoreModel(DynamicBufferMixin, nn.Module):
@@ -103,7 +103,7 @@ class PatchcoreModel(DynamicBufferMixin, nn.Module):
             Lightning implementation of the PatchCore model
         - :class:`anomalib.models.image.patchcore.anomaly_map.AnomalyMapGenerator`:
             Anomaly map generation for PatchCore
-        - :class:`anomalib.models._components.KCenterGreedy`:
+        - :class:`anomalib.components.KCenterGreedy`:
             Coreset subsampling using k-center-greedy approach
     """
 

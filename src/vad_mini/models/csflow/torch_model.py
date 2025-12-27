@@ -31,9 +31,9 @@ from torch.nn import functional as F  # noqa: N812
 from torchvision.models import efficientnet_b5
 
 # from anomalib.data import InferenceBatch
-# from anomalib.models._components.feature_extractors import TimmFeatureExtractor
-from vad_mini.models._components.feature_extracotr import TimmFeatureExtractor
-from vad_mini.models._components.backbone import get_backbone_path
+# from anomalib.components.feature_extractors import TimmFeatureExtractor
+from vad_mini.components.feature_extracotr import TimmFeatureExtractor
+from vad_mini.components.backbone import get_backbone_path
 from .anomaly_map import AnomalyMapGenerator, AnomalyMapMode
 
 
