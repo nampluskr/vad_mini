@@ -44,20 +44,8 @@ if __name__ == "__main__":
         transform=get_test_transform(img_size=IMG_SIZE, crop_size=CROP_SIZE, normalize=NORMALIZE),
         mask_transform=get_mask_transform(img_size=IMG_SIZE if CROP_SIZE is None else CROP_SIZE),
     )
-    train_loader = get_train_loader(
-        dataset=train_dataset,
-        batch_size=BATCH_SIZE,
-        num_workers=8,
-        pin_memory=True,
-        persistent_workers=False,
-    )
-    test_loader = get_test_loader(
-        dataset=test_dataset,
-        batch_size=BATCH_SIZE,
-        num_workers=8,
-        pin_memory=True,
-        persistent_workers=False,
-    )
+    train_loader = get_train_loader(dataset=train_dataset, batch_size=BATCH_SIZE)
+    test_loader = get_test_loader(dataset=test_dataset, batch_size=BATCH_SIZE)
 
     #######################################################
     ## Train Model

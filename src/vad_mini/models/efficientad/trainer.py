@@ -10,7 +10,7 @@ from torchvision.transforms import CenterCrop, Compose, Normalize, RandomGraysca
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
-from vad_mini.common.base_trainer import BaseTrainer, EarlyStopper
+from vad_mini.common.base_trainer import BaseTrainer
 from .torch_model import EfficientAdModel, EfficientAdModelSize, reduce_tensor_elems
 
 
@@ -42,11 +42,6 @@ class EfficientAdTrainer(BaseTrainer):
             step_size=int(0.95 * self.max_steps),
             gamma=0.1
         )
-        self.gradient_clip_val = None
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
 
     def on_train_start(self) -> None:
         """Set up model before training begins.

@@ -7,7 +7,6 @@ def get_train_loader(dataset, batch_size=32, collate_fn=None, **kwargs):
     config = {
         "num_workers": 8,
         "pin_memory": True,
-        "persistent_workers": True,
     }
     config.update(kwargs)
 
@@ -25,7 +24,6 @@ def get_test_loader(dataset, batch_size=32, collate_fn=None, **kwargs):
     config = {
         "num_workers": 8,
         "pin_memory": True,
-        "persistent_workers": True,
     }
     config.update(kwargs)
 
@@ -43,7 +41,6 @@ def get_dataloader(dataset, batch_size=32, shuffle=False, num_workers=None,
     config = {
         "num_workers": 8,
         "pin_memory": True,
-        "persistent_workers": True,
     }
     
     if num_workers is not None:
