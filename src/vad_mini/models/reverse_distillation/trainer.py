@@ -11,14 +11,14 @@ from .anomaly_map import AnomalyMapGenerationMode
 
 class ReverseDistillationTrainer(BaseTrainer):
     def __init__(self, backbone="wide_resnet50_2", layers=["layer1", "layer2", "layer3"],
-        input_size=(256, 256), anomaly_map_mode="add", pre_trained=True):
+        input_size=(256, 256), anomaly_map_mode="add"):
 
         model = ReverseDistillationModel(
             backbone=backbone,
             layers=layers,
             input_size=input_size,
             anomaly_map_mode=anomaly_map_mode,
-            pre_trained=pre_trained,
+            pre_trained=True,
         )
         loss_fn = ReverseDistillationLoss()
         super().__init__(model, loss_fn)

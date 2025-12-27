@@ -9,13 +9,13 @@ from .loss import FastflowLoss
 
 
 class FastflowTrainer(BaseTrainer):
-    def __init__(self, backbone="wide_resnet50_2", pre_trained=True, 
-            flow_steps=8, conv3x3_only=False, hidden_ratio=1.0, input_size=(256, 256)):
+    def __init__(self, backbone="wide_resnet50_2", 
+        flow_steps=8, conv3x3_only=False, hidden_ratio=1.0, input_size=(256, 256)):
 
         model = FastflowModel(
             input_size=input_size,
             backbone=backbone,
-            pre_trained=pre_trained,
+            pre_trained=True,
             flow_steps=flow_steps,
             conv3x3_only=conv3x3_only,
             hidden_ratio=hidden_ratio,

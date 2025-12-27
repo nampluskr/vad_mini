@@ -11,14 +11,14 @@ from .utils import get_logp, positional_encoding_2d
 
 
 class CflowTrainer(BaseTrainer):
-    def __init__(self, backbone="wide_resnet50_2", layers=["layer1", "layer2", "layer3"], pre_trained=True,
+    def __init__(self, backbone="wide_resnet50_2", layers=["layer1", "layer2", "layer3"], 
                  fiber_batch_size=64, decoder="freia-cflow", condition_vector=128, coupling_blocks=8,
                  clamp_alpha=1.9, permute_soft=False):
 
         model = CflowModel(
             backbone=backbone,
             layers=layers,
-            pre_trained=pre_trained,
+            pre_trained=True,
             fiber_batch_size=fiber_batch_size,
             decoder=decoder,
             condition_vector=condition_vector,

@@ -9,11 +9,11 @@ from .torch_model import PatchcoreModel
 
 class PatchcoreTrainer(BaseTrainer):
     def __init__(self, backbone="wide_resnet50_2", layers=["layer2", "layer3"],
-        pre_trained=True, num_neighbors=9, coreset_sampling_ratio=0.1):
+        num_neighbors=9, coreset_sampling_ratio=0.1):
 
         model = PatchcoreModel(
             backbone=backbone,
-            pre_trained=pre_trained,
+            pre_trained=True,
             layers=layers,
             num_neighbors=num_neighbors,
         )
