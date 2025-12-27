@@ -6,17 +6,17 @@ profiles:
   wsl:
     backbone_dir: /mnt/d/deep_learning/backbones
     dataset_dir: /mnt/d/datasets/mvtec
-    output_dir: /mnt/d/experiments/vad_mini/outputs
-    cache_dir: /mnt/d/experiments/vad_mini/cache
+    output_dir: /mnt/d/experiments/defectvad/outputs
+    cache_dir: /mnt/d/experiments/defectvad/cache
 
   linux:
     backbone_dir: /data/backbones
     dataset_dir: /data/datasets/mvtec
-    output_dir: /data/outputs/vad_mini
-    cache_dir: /data/cache/vad_mini
+    output_dir: /data/outputs/defectvad
+    cache_dir: /data/cache/defectvad
 
   windows:
     backbone_dir: D:/deep_learning/backbones
     dataset_dir: D:/datasets/mvtec
-    output_dir: D:/experiments/vad_mini/outputs
-    cache_dir: D:/experiments/vad_mini/cache
+    output_dir: D:/experiments/defectvad/outputs
+    cache_dir: D:/experiments/defectvad/cache

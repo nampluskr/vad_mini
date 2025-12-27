@@ -5,10 +5,10 @@ source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
 if source_dir not in sys.path:
     sys.path.insert(0, source_dir)
 
-from vad_mini.utils import set_seed
-from vad_mini.data.datasets import MVTecDataset
-from vad_mini.data.dataloaders import get_train_loader, get_test_loader
-from vad_mini.data.transforms import get_train_transform, get_test_transform, get_mask_transform
+from defectvad.utils import set_seed
+from defectvad.data.datasets import MVTecDataset
+from defectvad.data.dataloaders import get_train_loader, get_test_loader
+from defectvad.data.transforms import get_train_transform, get_test_transform, get_mask_transform
 
 
 DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.dfkde.trainer import DfkdeTrainer
+    from defectvad.models.dfkde.trainer import DfkdeTrainer
 
     if 1:
         trainer = DfkdeTrainer(backbone="resnet18", layers=["layer4"], feature_scaling_method="scale")

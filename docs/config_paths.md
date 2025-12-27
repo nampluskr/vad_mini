@@ -10,20 +10,20 @@ profiles:
   wsl:
     backbone_dir: /mnt/d/deep_learning/backbones
     dataset_dir: /mnt/d/datasets/mvtec
-    output_dir: /mnt/d/experiments/vad_mini/outputs
-    cache_dir: /mnt/d/experiments/vad_mini/cache
+    output_dir: /mnt/d/experiments/defectvad/outputs
+    cache_dir: /mnt/d/experiments/defectvad/cache
 
   linux_server:
     backbone_dir: /data/backbones
     dataset_dir: /data/datasets/mvtec
-    output_dir: /data/outputs/vad_mini
-    cache_dir: /data/cache/vad_mini
+    output_dir: /data/outputs/defectvad
+    cache_dir: /data/cache/defectvad
 
   windows:
     backbone_dir: D:/deep_learning/backbones
     dataset_dir: D:/datasets/mvtec
-    output_dir: D:/experiments/vad_mini/outputs
-    cache_dir: D:/experiments/vad_mini/cache
+    output_dir: D:/experiments/defectvad/outputs
+    cache_dir: D:/experiments/defectvad/cache
 ```
 
 ---
@@ -44,10 +44,10 @@ configs/paths.yaml
 
 # 3. 설정 로더 구현
 
-`src/vad_mini/utils/config.py`
+`src/defectvad/utils/config.py`
 
 ```python
-# src/vad_mini/utils/config.py
+# src/defectvad/utils/config.py
 
 import os
 import yaml
@@ -96,14 +96,14 @@ def validate_paths(paths: dict):
 
 # 4. 프로젝트 bootstrap (핵심)
 
-`src/vad_mini/bootstrap.py`
+`src/defectvad/bootstrap.py`
 
 ```python
-# src/vad_mini/bootstrap.py
+# src/defectvad/bootstrap.py
 
 import os
-from vad_mini.utils.config import load_yaml, resolve_paths_cfg, validate_paths
-from vad_mini.components.backbone import set_backbone_dir
+from defectvad.utils.config import load_yaml, resolve_paths_cfg, validate_paths
+from defectvad.components.backbone import set_backbone_dir
 
 
 def init_from_paths_yaml(paths_yaml: str = "configs/paths.yaml") -> dict:
@@ -148,7 +148,7 @@ BACKBONE_DIR = os.getenv('BACKBONE_DIR', '/mnt/d/deep_learning/backbones')
 ```python
 # experiments/train_cflow_mvtec.py
 
-from vad_mini.bootstrap import init_from_paths_yaml
+from defectvad.bootstrap import init_from_paths_yaml
 
 # ★ 가장 중요: 모델 import 이전에 실행
 paths = init_from_paths_yaml("configs/paths.yaml")
@@ -158,8 +158,8 @@ for k, v in paths.items():
     print(f"   {k}: {v}")
 
 # 이제 안전하게 모델 생성 가능
-from vad_mini.models.cflow.trainer import CflowTrainer
-from vad_mini.datasets.mvtec import MVTecDataset
+from defectvad.models.cflow.trainer import CflowTrainer
+from defectvad.datasets.mvtec import MVTecDataset
 from torch.utils.data import DataLoader
 
 train_dataset = MVTecDataset(

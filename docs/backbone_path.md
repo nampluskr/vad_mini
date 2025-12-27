@@ -5,7 +5,7 @@
 현재 구조:
 
 ```
-src/vad_mini/
+src/defectvad/
  └─ models/
     └─ components/
        └─ backbone.py
@@ -89,7 +89,7 @@ src/vad_mini/
 ## 4.1 최종적으로 가장 많이 쓰이는 구조 (권장)
 
 ```
-src/vad_mini/
+src/defectvad/
  ├─ bootstrap.py
  ├─ config/
  │   ├─ paths.py            # 전역 경로 상태 관리
@@ -108,7 +108,7 @@ src/vad_mini/
 ### (A) `config/paths.py` – 전역 경로 상태 관리
 
 ```python
-# src/vad_mini/config/paths.py
+# src/defectvad/config/paths.py
 
 import os
 
@@ -131,10 +131,10 @@ def get_backbone_dir() -> str:
 ### (B) `resources/backbone.py` – backbone 규칙만 담당
 
 ```python
-# src/vad_mini/resources/backbone.py
+# src/defectvad/resources/backbone.py
 
 import os
-from vad_mini.config.paths import get_backbone_dir
+from defectvad.config.paths import get_backbone_dir
 
 BACKBONE_WEIGHT_FILES = {
     ...
@@ -153,9 +153,9 @@ def get_backbone_path(backbone: str) -> str:
 ### (C) `bootstrap.py` – 연결만 담당
 
 ```python
-# src/vad_mini/bootstrap.py
+# src/defectvad/bootstrap.py
 
-from vad_mini.config.paths import set_backbone_dir
+from defectvad.config.paths import set_backbone_dir
 
 def init_from_paths_yaml(...):
     set_backbone_dir(backbone_dir)
@@ -200,7 +200,7 @@ Backbone weight resource resolver.
 
 NOTE:
 - This module manages *external resources*, not model definitions.
-- It may be relocated to vad_mini/resources in future refactoring.
+- It may be relocated to defectvad/resources in future refactoring.
 """
 ```
 
