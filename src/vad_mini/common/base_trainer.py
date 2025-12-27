@@ -1,4 +1,4 @@
-# src/vad_mini/models/components/base_trainer.py
+# common/base_trainer.py
 
 from abc import ABC, abstractmethod
 from tqdm import tqdm

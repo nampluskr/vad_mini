@@ -1,30 +1,4 @@
-""" filename: models/components/backbone.py 
-Backbone Weight Path Management
-
-Global Variable:
-- BACKBONE_DIR: Directory containing pretrained backbone weights
-
-Dictionary:
-- BACKBONE_WEIGHT_FILES: Mapping of backbone names to weight filenames
-  * CNN backbones: resnet18, resnet50, wide_resnet50_2, efficientnet_b5
-  * Transformer backbones: dinov2_vit_*, cait_*, deit_*
-  
-Functions:
-- set_backbone_dir(backbone_dir): Update global BACKBONE_DIR
-- get_backbone_path(backbone): Get full path to backbone weight file
-  * Automatically handles different backbone types (CNN vs Transformer)
-  * Checks file existence and prints status
-  * Returns path for safetensors or .pth files depending on backbone type
-
-Example:
-    >>> from common.backbone import set_backbone_dir, get_backbone_path
-    >>> set_backbone_dir("/mnt/d/backbones")
-    >>> path = get_backbone_path("resnet50")
-    >>> # Returns: "/mnt/d/backbones/resnet50-0676ba61.pth"
-    >>>
-    >>> path = get_backbone_path("dinov2_vit_base_14")
-    >>> # Returns: "/mnt/d/backbones/dinov2_vitb14_pretrain.pth"
-"""
+# common/bacbone.py
 
 import os
 
