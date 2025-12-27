@@ -37,13 +37,6 @@ class CflowTrainer(BaseTrainer):
             params=decoders_parameters,
             lr=0.0001,
         )
-        self.optimizer = None
-        self.scheduler = None
-        self.gradient_clip_val = None
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
 
     def training_step(self, batch):
         """Perform a training step of the CFLOW model.

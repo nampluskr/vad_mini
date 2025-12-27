@@ -29,12 +29,6 @@ class FastflowTrainer(BaseTrainer):
             lr=0.001,
             weight_decay=0.00001,
         )
-        self.scheduler = None
-        self.gradient_clip_val = None
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
 
     def training_step(self, batch):
         images = batch["image"].to(self.device)

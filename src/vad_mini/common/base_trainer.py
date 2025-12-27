@@ -8,6 +8,8 @@ from torch.nn.utils import clip_grad_norm_
 from torchmetrics.classification import BinaryAUROC, BinaryAveragePrecision
 from torchmetrics.functional.classification import binary_roc
 
+from .early_stopper import EarlyStopper
+
 
 class BaseTrainer(ABC):
     def __init__(self, model, loss_fn=None, device=None):
@@ -45,7 +47,8 @@ class BaseTrainer(ABC):
         pass
 
     def configure_early_stoppers(self):
-        pass
+        self.train_early_stopper = None
+        self.valid_early_stopper = EarlyStopper(patience=5, min_delta=1e-3, monitor="auroc")
 
     @abstractmethod
     def training_step(self, batch):
@@ -56,9 +59,6 @@ class BaseTrainer(ABC):
         predictions = self.model(images)
         return {**batch, **predictions}
     
-    def backward(loss):
-        loss.backward()
-
     #######################################################
     # fit: train model for max_epochs or max_steps
     #######################################################
@@ -94,6 +94,9 @@ class BaseTrainer(ABC):
     #######################################################
     # Hooks
     #######################################################
+
+    def backward(self, loss):
+        loss.backward()
 
     def on_fit_start(self): pass
 

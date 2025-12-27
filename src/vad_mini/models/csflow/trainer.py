@@ -31,12 +31,7 @@ class CsflowTrainer(BaseTrainer):
             weight_decay=1e-5,
             betas=(0.5, 0.9),
         )
-        self.scheduler = None
         self.gradient_clip_val = 1.0
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
 
     def training_step(self, batch):
         images = batch["image"].to(self.device)
