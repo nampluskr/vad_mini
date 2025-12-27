@@ -26,7 +26,7 @@ if __name__ == "__main__":
     set_seed(SEED)
 
     #######################################################
-    ## Load Datste and Dataloader
+    ## Load Dataset and Dataloader
     #######################################################
 
     train_dataset = MVTecDataset(

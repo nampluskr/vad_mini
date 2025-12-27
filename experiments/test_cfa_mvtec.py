@@ -1,4 +1,4 @@
-# experiments/test_cflow_mvtec.py
+# experiments/test_cfa_mvtec.py
 
 import os, sys
 source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
@@ -13,10 +13,10 @@ from vad_mini.data.transforms import get_train_transform, get_test_transform, ge
 
 DATA_DIR = "/mnt/d/deep_learning/datasets/mvtec"
 # DATA_DIR = "/home/namu/myspace/NAMU/datasets/mvtec"
-CATEGORY = "bottle"
+CATEGORY = "tile"
 IMG_SIZE = 256
-CROP_SIZE = None
-BATCH_SIZE = 4
+CROP_SIZE = 224
+BATCH_SIZE = 16
 NORMALIZE = True
 SEED = 42
 
@@ -50,12 +50,7 @@ if __name__ == "__main__":
     ## Train Model
     #######################################################
 
-    from vad_mini.models.cflow.trainer import CflowTrainer
+    from vad_mini.models.cfa.trainer import CfaTrainer
 
-    trainer = CflowTrainer(backbone="resnet18")
-    trainer.fit(train_loader, max_epochs=10, valid_loader=test_loader)
-    thresholds = trainer.calibrate_threshold(train_loader)
-
-
-
-    
+    trainer = CfaTrainer(backbone="wide_resnet50_2")
+    trainer.fit(train_loader, max_epochs=5, valid_loader=test_loader)

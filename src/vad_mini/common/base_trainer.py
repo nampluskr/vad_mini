@@ -55,6 +55,9 @@ class BaseTrainer(ABC):
         images = batch["image"].to(self.device)
         predictions = self.model(images)
         return {**batch, **predictions}
+    
+    def backward(loss):
+        loss.backward()
 
     #######################################################
     # fit: train model for max_epochs or max_steps
@@ -180,7 +183,7 @@ class BaseTrainer(ABC):
                 if self.optimizer is not None:
                     self.optimizer.zero_grad()
                     loss = batch_outputs["loss"]
-                    loss.backward()
+                    self.backward(loss)
 
                     if self.gradient_clip_val is not None and self.gradient_clip_val > 0:
                         clip_grad_norm_(self.model.parameters(), max_norm=self.gradient_clip_val)

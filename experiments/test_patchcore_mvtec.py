@@ -1,4 +1,5 @@
 # experiments/test_patchcore_mvtec.py
+
 import os, sys
 source_dir = os.path.join(os.path.dirname(__file__), "..", "src")
 if source_dir not in sys.path:
@@ -26,7 +27,7 @@ if __name__ == "__main__":
     set_seed(SEED)
 
     #######################################################
-    ## Load Datste and Dataloader
+    ## Load Dataset and Dataloader
     #######################################################
 
     train_dataset = MVTecDataset(

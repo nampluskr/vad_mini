@@ -26,15 +26,10 @@ class STFPMTrainer(BaseTrainer):
             dampening=0.0,
             weight_decay=0.001,
         )
-        self.scheduler = None
         self.gradient_clip_val = 1.0
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
 
     def training_step(self, batch):
         images = batch["image"].to(self.device)
         teacher_features, student_features = self.model.forward(images)
         loss = self.loss_fn(teacher_features, student_features)
-        return dict(loss=loss)
+        return {"loss": loss}
