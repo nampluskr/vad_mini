@@ -27,7 +27,7 @@ class AnomalyDINOTrainer(BaseTrainer):
     def training_step(self, batch):
         images = batch["image"].to(self.device)
         _ = self.model(images)
-        return {"loss": torch.tensor(0.0, device=self.device)}
+        return {"loss": torch.tensor(0.0).float().to(self.device)}
 
     def on_train_end(self):
         super().on_train_end()
