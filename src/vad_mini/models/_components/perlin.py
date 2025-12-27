@@ -33,6 +33,7 @@ from torchvision.datasets.folder import IMG_EXTENSIONS
 from torchvision.transforms import v2
 
 # from anomalib.data.transforms import MultiRandomChoice
+from .multi_random_choice import MultiRandomChoice
 
 
 def generate_perlin_noise(

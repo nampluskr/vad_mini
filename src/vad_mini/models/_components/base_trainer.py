@@ -92,34 +92,37 @@ class BaseTrainer(ABC):
         # training epochs and steps
         self.global_epoch = 0
         self.global_step = 0
-        self.max_epochs = None
-        self.max_steps = None
+        self.max_epochs = 1
+        self.max_steps = 1
 
         # validation metrics
         self.aucroc = BinaryAUROC().to(self.device)
         self.aupr = BinaryAveragePrecision().to(self.device)
 
     #######################################################
-    # Abstract methods for each model
+    # setup for anomaly detection models
     #######################################################
 
-    @abstractmethod
     def configure_optimizers(self):
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def configure_early_stoppers(self):
-        raise NotImplementedError
+        pass
 
     @abstractmethod
     def training_step(self, batch):
         raise NotImplementedError
+    
+    def validation_step(self, batch):
+        images = batch["image"].to(self.device)
+        predictions = self.model(images)
+        return {**batch, **predictions}
 
     #######################################################
     # fit: train model for max_epochs or max_steps
     #######################################################
 
-    def fit(self, train_loader, max_epochs, valid_loader=None):
+    def fit(self, train_loader, max_epochs=1, valid_loader=None):
         self.max_epochs = max_epochs
         self.max_steps = max_epochs * len(train_loader)
         self.train_loader = train_loader
@@ -131,14 +134,14 @@ class BaseTrainer(ABC):
         self.on_fit_start()
         self.on_train_start()
 
-        for _ in range(max_epochs):
+        for _ in range(self.max_epochs):
             self.on_train_epoch_start()
-            train_outputs = self.train_one_epoch(train_loader)
+            train_outputs = self.train(self.train_loader)
             self.on_train_epoch_end(train_outputs)
 
-            if valid_loader is not None:
+            if self.valid_loader is not None:
                 self.on_validation_epoch_start()
-                valid_outputs = self.validate_one_epoch(valid_loader)
+                valid_outputs = self.validate(self.valid_loader)
                 self.on_validation_epoch_end(valid_outputs)
 
             if self.train_early_stop or self.valid_early_stop:
@@ -186,19 +189,14 @@ class BaseTrainer(ABC):
             elif self.train_early_stopper.early_stop:
                 self.early_stop_str += f"Training Early Stopped! {self.train_early_stopper.get_info()}"
 
-        if self.max_steps is not None:
-            if self.current_step >= self.max_steps:
-                self.train_early_stop = True
-                self.early_stop_str += f"Max training step reached! {self.current_step} steps"
+        # if self.max_steps is not None:
+        #     if self.current_step >= self.max_steps:
+        #         self.train_early_stop = True
+        #         self.early_stop_str += f"Max training step reached! {self.current_step} steps"
 
     def on_validation_epoch_start(self): pass
 
     def on_validation_batch_start(self, batch, batch_idx): pass
-
-    def validation_step(self, batch):
-        images = batch["image"].to(self.device)
-        predictions = self.model(images)
-        return {**batch, **predictions}
 
     def on_validation_batch_end(self, outputs, batch, batch_idx): pass
 
@@ -227,7 +225,7 @@ class BaseTrainer(ABC):
     #######################################################
 
     @torch.enable_grad()
-    def train_one_epoch(self, train_loader):
+    def train(self, train_loader):
         self.model.train()
         outputs = {}
         num_images = 0
@@ -270,7 +268,7 @@ class BaseTrainer(ABC):
     #######################################################
 
     @torch.no_grad()
-    def validate_one_epoch(self, valid_loader):
+    def validate(self, valid_loader):
         self.model.eval()
         all_pred_scores = []
         all_labels = []

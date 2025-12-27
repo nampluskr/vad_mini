@@ -5,7 +5,6 @@ import torch.optim as optim
 
 from vad_mini.models._components.base_trainer import BaseTrainer
 from .torch_model import AnomalyDINOModel
-from .loss import STFPMLoss
 
 
 class AnomalyDINOTrainer(BaseTrainer):
@@ -21,24 +20,15 @@ class AnomalyDINOTrainer(BaseTrainer):
         )
         super().__init__(model, loss_fn=None)
 
-    def configure_optimizers(self):
-        self.optimizer = optim.SGD(
-            params=self.model.student_model.parameters(),
-            lr=0.4,         # default lr=0.4
-            momentum=0.9,
-            dampening=0.0,
-            weight_decay=0.001,
-        )
-        self.scheduler = None
-        self.gradient_clip_val = 1.0
-
-    def configure_early_stoppers(self):
-        self.train_early_stopper = None
-        self.valid_early_stopper = None
+    def on_train_start(self):
+        super().on_train_start()
+        self.max_epochs = 1
 
     def training_step(self, batch):
         images = batch["image"].to(self.device)
-        teacher_features, student_features = self.model.forward(images)
-        loss = self.loss_fn(teacher_features, student_features)
-        return dict(loss=loss)
+        _ = self.model(images)
+        return {"loss": torch.tensor(0.0, device=self.device)}
 
+    def on_train_end(self):
+        super().on_train_end()
+        self.model.fit()

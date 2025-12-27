@@ -252,7 +252,7 @@ class PatchcoreModel(DynamicBufferMixin, nn.Module):
         embedding_size = embedding.size(1)
         return embedding.permute(0, 2, 3, 1).reshape(-1, embedding_size)
 
-    @deprecate(args={"embeddings": None}, since="2.1.0", reason="Use the default memory bank instead.")
+    # @deprecate(args={"embeddings": None}, since="2.1.0", reason="Use the default memory bank instead.")
     def subsample_embedding(self, sampling_ratio: float, embeddings: torch.Tensor = None) -> None:
         """Subsample the memory_banks embeddings using coreset selection.
 

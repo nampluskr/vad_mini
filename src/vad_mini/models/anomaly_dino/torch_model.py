@@ -82,7 +82,11 @@ class AnomalyDINOModel(DynamicBufferMixin, nn.Module):
         if not encoder_name.startswith("dinov2"):
             err_str = f"Encoder name must start with 'dinov2', got '{encoder_name}'"
             raise ValueError(err_str)
-        self.feature_encoder = DinoV2Loader.from_name(self.encoder_name)
+        self.feature_encoder = DinoV2Loader.from_name(
+            model_name=self.encoder_name,
+            cache_dir="/mnt/d/deep_learning/backbones",
+            # cache_dir="/home/namu/myspace/NAMU/backbones",
+        )
         self.feature_encoder.eval()
 
         # Memory bank and embedding storage
@@ -128,7 +132,14 @@ class AnomalyDINOModel(DynamicBufferMixin, nn.Module):
             where ``N`` is the number of patches and ``D`` the feature dimension.
         """
         with torch.inference_mode():
-            return self.feature_encoder.get_intermediate_layers(image_tensor, n=1)[0]
+            # return self.feature_encoder.get_intermediate_layers(image_tensor, n=1)[0]
+            features = self.feature_encoder.get_intermediate_layers(image_tensor, n=1)[0]
+
+        # Remove register tokens
+        h, w = image_tensor.shape[-2:]
+        num_patches = (h // self.feature_encoder.patch_size) * (w // self.feature_encoder.patch_size)
+        features = features[:, -num_patches:, :]  # registers are at the front
+        return features
 
     @staticmethod
     def compute_background_masks(
@@ -244,7 +255,8 @@ class AnomalyDINOModel(DynamicBufferMixin, nn.Module):
             masks_np = self.compute_background_masks(features_np, grid_size)
             masks = torch.from_numpy(masks_np).to(device)
         else:
-            masks = torch.ones(features.shape[:2], dtype=torch.bool, device=device)
+            # masks = torch.ones(features.shape[:2], dtype=torch.bool, device=device)
+            masks = torch.ones((b, grid_size[0] * grid_size[1]), dtype=torch.bool, device=device)
 
         features = features[masks]
         features = F.normalize(features, p=2, dim=1)
